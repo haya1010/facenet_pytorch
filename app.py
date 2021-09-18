@@ -26,23 +26,12 @@ def make_result(compare, urls):
     res = {}
     res['compare'] = compare
     for key in urls.keys():
-        urls[key]
         res[key] = {}
         for url in urls[key]:
             img1 = feature_vector(url)
             img2 = feature_vector(compare)
             res[key][url] = str(cosine_similarity(img1, img2))
-        return res
-
-def get_result(compare, urls):
-  tmp = {}
-  for url in urls:
-    img1 = feature_vector(url)
-    img2 = feature_vector(compare)
-    tmp[url] = cosine_similarity(img1, img2)
-  print(tmp)
-  return tmp
-
+    return res
 
 app = Flask(__name__)
 
@@ -50,29 +39,13 @@ app = Flask(__name__)
 def hello():
     return 'hello facenet_pytorch'
 
-@app.route('/test')
-def test():
-    url1 = 'https://thetv.jp/i/nw/1023326/10207156.jpg?w=615'
-    url2 = 'https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202012/mobMCWhSw.jpg'
-    url3 = 'https://coconutsjapan.com/wp-content/uploads/2020/06/jiji-kawatahina-hinatazaka46.jpg'
-    url4 = 'https://thetv.jp/i/nw/1023326/10207156.jpg?w=615'
-
-    img1 = feature_vector(url1)
-    img2 = feature_vector(url2)
-    result = cosine_similarity(img1, img2)
-    res = {}
-    res['result'] = str(result)
-    return make_response(jsonify(res))
-
-@app.route('/post')
+@app.route('/post', methods=['POST'])
 def post():
     data = request.get_json()
     compare = data['compare']
     urls = data['urls']
     res = make_result(compare, urls)
     return make_response(jsonify(res))
-
-
 
 if __name__=='__main__':
     # app.run(debug=True)
