@@ -4,6 +4,7 @@ import numpy as np
 import requests
 import io
 from flask import Flask, jsonify, abort, make_response, request
+import os
 
 #### MTCNN ResNet のモデル読み込み
 mtcnn = MTCNN()
@@ -44,4 +45,7 @@ def test():
     return make_response(jsonify(res))
 
 if __name__=='__main__':
-    app.run(debug=True)
+    # app.run(debug=True)
+    port = os.getenv('PORT')
+    app.run(host='0.0.0.0', port=port)
+
