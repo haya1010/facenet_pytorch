@@ -47,6 +47,38 @@ def post():
     res = make_result(compare, urls)
     return make_response(jsonify(res))
 
+from linebot import (
+    LineBotApi, WebhookHandler
+)
+from linebot.models import (
+    MessageEvent, JoinEvent, TextMessage, TextSendMessage, LocationMessage, CarouselTemplate, CarouselColumn, TemplateSendMessage, URITemplateAction, ButtonsTemplate, PostbackTemplateAction, PostbackEvent, MessageAction
+)
+CHANNEL_ACCESS_TOKEN = 'k5tuhu/cYkLBG3M1UaS8I4WW7V40B1eNqKlgiE9bdM3OnqGPw3KvoTn+ZrIZplDHUVnUT/CfzM1Z/Peg8H7hYIoNgcjFLl1x7cAHV6Lb2UQQe+K8fPYVQ5XNJT2fjjFb7mTIlerxFgERbYtxbp5GywdB04t89/1O/w1cDnyilFU='
+CHANNEL_SECRET = '19ab685c8fe84c2e4ec1bc036597bbec'
+line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
+handler = WebhookHandler(CHANNEL_SECRET)
+
+@app.route('/line', methods=['GET'])
+def line():
+    line_bot_api.push_message(
+            'Ud1aab8bcda543156713b1a9946fefc79',
+            TextSendMessage(text='hello')
+        )
+    return 'sent'
+
+@app.route('/linepost', methods=['POST'])
+def linepost():
+    data = request.get_json()
+    pitch = data['pitch']
+    roll = data['roll']
+    message = 'pitch: {}\nroll: {}'.format(pitch, roll)
+    line_bot_api.push_message(
+            'Ud1aab8bcda543156713b1a9946fefc79',
+            TextSendMessage(text=message)
+        )
+    res = {'pitch':pitch, 'roll':roll}
+    return make_response(jsonify(res))
+
 if __name__=='__main__':
     # app.run(debug=True)
     port = os.getenv('PORT')
