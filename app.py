@@ -66,6 +66,14 @@ def line():
         )
     return 'sent'
 
+@app.route('/linesend/<message>', methods=['GET'])
+def linesend(message):
+    line_bot_api.push_message(
+            'Ud1aab8bcda543156713b1a9946fefc79',
+            TextSendMessage(text=message)
+        )
+    return '{}\nsent'.format(message)
+
 @app.route('/linepost', methods=['POST'])
 def linepost():
     data = request.get_json()
@@ -78,6 +86,13 @@ def linepost():
         )
     res = {'pitch':pitch, 'roll':roll}
     return make_response(jsonify(res))
+
+from flask import render_template
+@app.route('/map', methods=['GET'])
+def map():
+    lat = 36.00
+    lng = 140.00
+    return render_template('test.html', lat=lat, lng=lng)
 
 if __name__=='__main__':
     # app.run(debug=True)
