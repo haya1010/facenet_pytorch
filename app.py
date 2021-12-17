@@ -82,6 +82,16 @@ def read_flag(key):
     value = get_flag_value_by_key(key)
     return value
 
+@app.route('/flag/update/<key>/<new_value>', methods=['GET'])
+def updateFlag(key, new_value):
+    update_flag(key, new_value)
+    return 'updated'
+
+@app.route('/flag/delete/<key>', methods=['GET'])
+def deleteFlag(key):
+    delete_flag(key)
+    return 'deleted'
+
 
 @app.route('/')
 def hello():
