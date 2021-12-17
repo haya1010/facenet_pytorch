@@ -5,6 +5,7 @@ import requests
 import io
 from flask import Flask, jsonify, abort, make_response, request
 import os
+from flask_sqlalchemy import SQLAlchemy
 
 #### MTCNN ResNet のモデル読み込み
 mtcnn = MTCNN()
@@ -34,6 +35,49 @@ def make_result(compare, urls):
     return res
 
 app = Flask(__name__)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://feqrylwnedlfvi:c83988be335494405e41942747685f857107c79df24a844207c34d24b9f61f3a@ec2-52-70-205-234.compute-1.amazonaws.com:5432/d5qflmnn8ap0a5'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+class Flag(db.Model):
+    __tablename__ = 'flag'
+    id = db.Column(db.Integer, primary_key=True)
+    key = db.Column(db.Text)
+    value = db.Column(db.Text)
+
+    def __init__(self, key, value):
+        self.key = key
+        self.value = value
+
+def get_flag_value_by_key(key):
+    flag_list = db.session.query(Flag).filter(Flag.key == key).all()
+    return flag_list[0].value
+
+def register_flag(key, value):
+    flag = Flag(key=key, value=value)
+    db.create_all()
+    db.session.add(flag)
+    db.session.commit()
+
+def update_flag(key, new_value):
+    flag_list = db.session.query(Flag).filter(Flag.key == key).all()
+    flag_list[0].value = new_value
+    db.session.add_all(flag_list)
+    db.session.commit()
+
+def delete_flag(key):
+    flag_list = db.session.query(Flag).filter(Flag.key == key).all()
+    db.session.delete(flag_list)
+    db.session.commit()
+
+@app.route('/flag/register/<key>/<value>', methods=['GET'])
+def register(key, value):
+    register_flag(key, value)
+    return '{}:{}\nregisterd'.format(key, value)
+
+
 
 @app.route('/')
 def hello():
