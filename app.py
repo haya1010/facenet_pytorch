@@ -77,6 +77,10 @@ def register(key, value):
     register_flag(key, value)
     return '{}:{}\nregisterd'.format(key, value)
 
+@app.route('/flag/read/<key>', methods=['GET'])
+def read_flag(key):
+    value = get_flag_value_by_key(key)
+    return value
 
 
 @app.route('/')

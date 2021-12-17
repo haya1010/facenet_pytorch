@@ -28,3 +28,4 @@ torchvision==0.10.0+cpu
 
 line-bot-sdk
 Flask-SQLAlchemy
+psycopg2
