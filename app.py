@@ -36,7 +36,7 @@ def make_result(compare, urls):
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://feqrylwnedlfvi:c83988be335494405e41942747685f857107c79df24a844207c34d24b9f61f3a@ec2-52-70-205-234.compute-1.amazonaws.com:5432/d5qflmnn8ap0a5'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://feqrylwnedlfvi:c83988be335494405e41942747685f857107c79df24a844207c34d24b9f61f3a@ec2-52-70-205-234.compute-1.amazonaws.com:5432/d5qflmnn8ap0a5'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
