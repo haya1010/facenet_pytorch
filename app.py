@@ -56,10 +56,15 @@ def get_flag_value_by_key(key):
     return flag_list[0].value
 
 def register_flag(key, value):
-    flag = Flag(key=key, value=value)
-    db.create_all()
-    db.session.add(flag)
-    db.session.commit()
+    flag_list = db.session.query(Flag).filter(Flag.key == key).all()
+    if len(flag_list) == 0:
+        flag = Flag(key=key, value=value)
+        db.create_all()
+        db.session.add(flag)
+        db.session.commit()
+        return 'registerd'
+    else:
+        return 'error'
 
 def update_flag(key, new_value):
     flag_list = db.session.query(Flag).filter(Flag.key == key).all()
@@ -74,8 +79,11 @@ def delete_flag(key):
 
 @app.route('/flag/register/<key>/<value>', methods=['GET'])
 def register(key, value):
-    register_flag(key, value)
-    return '{}:{}\nregisterd'.format(key, value)
+    res = register_flag(key, value)
+    if res == 'registerd':
+        return '{}:{}\nregisterd'.format(key, value)
+    else:
+        return 'error'
 
 @app.route('/flag/read/<key>', methods=['GET'])
 def read_flag(key):
