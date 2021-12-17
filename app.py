@@ -68,7 +68,7 @@ def update_flag(key, new_value):
     db.session.commit()
 
 def delete_flag(key):
-    flag_list = db.session.query(Flag).filter(Flag.key == key).all()
+    flag_list = db.session.query(Flag).filter(Flag.key == key).one()
     db.session.delete(flag_list)
     db.session.commit()
 
