@@ -153,6 +153,13 @@ def linepost():
     res = {'pitch':pitch, 'roll':roll}
     return make_response(jsonify(res))
 
+@app.route('/receivepost', methods=['POST'])
+def receivepost():
+    json = request.get_json()
+    data = json['data']
+    return data
+
+
 from flask import render_template
 @app.route('/map', methods=['GET'])
 def map():
