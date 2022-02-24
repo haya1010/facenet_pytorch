@@ -6,6 +6,7 @@ import io
 from flask import Flask, jsonify, abort, make_response, request
 import os
 from flask_sqlalchemy import SQLAlchemy
+from flask import CORS
 
 #### MTCNN ResNet のモデル読み込み
 mtcnn = MTCNN()
@@ -35,6 +36,7 @@ def make_result(compare, urls):
     return res
 
 app = Flask(__name__)
+CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://feqrylwnedlfvi:c83988be335494405e41942747685f857107c79df24a844207c34d24b9f61f3a@ec2-52-70-205-234.compute-1.amazonaws.com:5432/d5qflmnn8ap0a5'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -157,7 +159,7 @@ def linepost():
 def receivepost():
     json = request.get_json()
     data = json['data']
-    return data
+    return make_response(jsonify(data))
 
 
 from flask import render_template
