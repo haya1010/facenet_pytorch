@@ -173,6 +173,18 @@ def receivepost():
         )
     return make_response(jsonify(data))
 
+@app.route('/postdata', methods=['POST'])
+def postdata():
+    json = request.get_json()
+    data = json['data']
+    line_bot_api.push_message(
+            'Ud1aab8bcda543156713b1a9946fefc79',
+            TextSendMessage(text=data)
+        )
+    return make_response(jsonify(data))
+
+
+
 
 from flask import render_template
 @app.route('/map', methods=['GET'])
