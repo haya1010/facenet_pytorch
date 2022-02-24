@@ -6,7 +6,7 @@ import io
 from flask import Flask, jsonify, abort, make_response, request
 import os
 from flask_sqlalchemy import SQLAlchemy
-from flask import CORS
+from flask_cors import CORS
 
 #### MTCNN ResNet のモデル読み込み
 mtcnn = MTCNN()
