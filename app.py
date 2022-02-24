@@ -162,7 +162,7 @@ def receivepost():
     json = request.get_json()
     data = json['data']
     dec_data = base64.b64decode(data.split(',')[1])
-    dec_img = Image.open(BytesIO(dec_data))
+    dec_img = Image.open(BytesIO(dec_data)).convert('RGB')
     dec_img.save('static/picture.jpg')
     return make_response(jsonify(data))
 
