@@ -7,6 +7,8 @@ from flask import Flask, jsonify, abort, make_response, request
 import os
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+import base64
+from io import BytesIO
 
 #### MTCNN ResNet のモデル読み込み
 mtcnn = MTCNN()
@@ -159,6 +161,9 @@ def linepost():
 def receivepost():
     json = request.get_json()
     data = json['data']
+    dec_data = base64.b64decode(data.split(',')[1])
+    dec_img = Image.open(BytesIO(dec_data))
+    dec_img.save('static/picture.jpg')
     return make_response(jsonify(data))
 
 
