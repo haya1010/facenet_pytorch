@@ -121,7 +121,7 @@ from linebot import (
     LineBotApi, WebhookHandler
 )
 from linebot.models import (
-    MessageEvent, JoinEvent, TextMessage, TextSendMessage, LocationMessage, CarouselTemplate, CarouselColumn, TemplateSendMessage, URITemplateAction, ButtonsTemplate, PostbackTemplateAction, PostbackEvent, MessageAction
+    MessageEvent, JoinEvent, TextMessage, TextSendMessage, LocationMessage, CarouselTemplate, CarouselColumn, TemplateSendMessage, URITemplateAction, ButtonsTemplate, PostbackTemplateAction, PostbackEvent, MessageAction, ImageMessage, ImageSendMessage
 )
 CHANNEL_ACCESS_TOKEN = 'k5tuhu/cYkLBG3M1UaS8I4WW7V40B1eNqKlgiE9bdM3OnqGPw3KvoTn+ZrIZplDHUVnUT/CfzM1Z/Peg8H7hYIoNgcjFLl1x7cAHV6Lb2UQQe+K8fPYVQ5XNJT2fjjFb7mTIlerxFgERbYtxbp5GywdB04t89/1O/w1cDnyilFU='
 CHANNEL_SECRET = '19ab685c8fe84c2e4ec1bc036597bbec'
@@ -164,6 +164,13 @@ def receivepost():
     dec_data = base64.b64decode(data.split(',')[1])
     dec_img = Image.open(BytesIO(dec_data)).convert('RGB')
     dec_img.save('static/picture.jpg')
+    line_bot_api.push_message(
+            'Ud1aab8bcda543156713b1a9946fefc79',
+            ImageSendMessage(
+                original_content_url='https://facenet-pytorch.herokuapp.com/static/picture.jpg',
+                preview_image_url='https://facenet-pytorch.herokuapp.com/static/picture.jpg'
+            )
+        )
     return make_response(jsonify(data))
 
 
